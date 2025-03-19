@@ -108,7 +108,7 @@
     <div class="mb-6 flex justify-between items-center">
         <h1 class="text-2xl font-bold">Document Management</h1>
         <button 
-            class="px-3 py-1 bg-slate-200 hover:bg-slate-300 rounded"
+            class="px-3 py-1 bg-orange-200 hover:bg-orange-300 rounded"
             on:click={() => goto('/')}
         >
             ← Back
@@ -121,12 +121,12 @@
             <div>
                 <h2 class="text-lg font-semibold mb-2">Document Statistics</h2>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-gray-50 p-3 rounded-lg">
-                        <div class="text-sm text-gray-500">Total Documents</div>
+                    <div class="bg-orange-50 p-3 rounded-lg">
+                        <div class="text-sm text-orange-500">Total Documents</div>
                         <div class="text-2xl font-bold">{documents.length}</div>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded-lg">
-                        <div class="text-sm text-gray-500">Processed</div>
+                    <div class="bg-orange-50 p-3 rounded-lg">
+                        <div class="text-sm text-orange-500">Processed</div>
                         <div class="text-2xl font-bold">
                             {documents.filter(d => d.content).length}
                         </div>
@@ -138,7 +138,7 @@
                 <h2 class="text-lg font-semibold mb-2">Actions</h2>
                 <div class="flex flex-wrap gap-3">
                     <button 
-                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                        class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:opacity-50"
                         on:click={handleFetchDocuments}
                         disabled={isLoading}
                     >
@@ -146,7 +146,7 @@
                     </button>
                     
                     <button 
-                        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+                        class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:opacity-50"
                         on:click={handleProcessDocuments}
                         disabled={processing || documents.length === 0}
                     >
@@ -154,7 +154,7 @@
                     </button>
                     
                     <button 
-                        class="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+                        class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700"
                         on:click={goToChat}
                     >
                         Go to Chat
@@ -175,7 +175,7 @@
             <div class="mb-6">
                 <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
                     <div 
-                        class="h-full bg-green-500 transition-all duration-300" 
+                        class="h-full bg-orange-500 transition-all duration-300" 
                         style="width: {$documentStore.progress.total ? 
                             Math.round(($documentStore.progress.processed / $documentStore.progress.total) * 100) : 0}%"
                     ></div>
@@ -195,7 +195,7 @@
                     type="text" 
                     bind:value={apiEndpoint} 
                     placeholder="Enter API endpoint for document fetching"
-                    class="flex-grow px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="flex-grow px-3 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 />
             </div>
         </div>
@@ -209,7 +209,7 @@
                     type="text" 
                     bind:value={searchQuery} 
                     placeholder="Search by title or circular number"
-                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 />
             </div>
 
@@ -218,7 +218,7 @@
                 <select 
                     id="typeFilter"
                     bind:value={selectedType} 
-                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 >
                     {#each issuanceTypes as type}
                         <option value={type}>{type}</option>
@@ -248,7 +248,7 @@
                             <td class="py-3 px-4">
                                 <div class="font-medium">{doc.title}</div>
                                 {#if doc.downloadLink}
-                                    <a href={doc.downloadLink} target="_blank" class="text-xs text-blue-600 hover:underline">
+                                    <a href={doc.downloadLink} target="_blank" class="text-xs text-orange-600 hover:underline">
                                         View Document
                                     </a>
                                 {/if}
