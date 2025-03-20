@@ -144,7 +144,7 @@
                             <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
                         </div>
                     {:else}
-                        <p class="whitespace-pre-line">{@html snarkdown(message.content)}</p>
+                        <div class="whitespace-pre-line">{@html snarkdown(message.content)}</div>
                     {/if}
                 </div>
 

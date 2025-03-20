@@ -2,7 +2,7 @@ import type { ChatMessage, RagResponse, SearchResult } from '$lib/types';
 
 export class RagService {
   private model = 'gemma3';
-  private apiUrl = 'http://localhost:11434/api/chat';
+  private apiUrl = 'http://localhost:11434/v1/chat/completions';
   private messageBuffer: ChatMessage[] = [];
 
   constructor() {}
@@ -67,10 +67,10 @@ export class RagService {
 
       const response = await fetch(this.apiUrl, {
         method: 'POST',
-        headers: {
-          "ngrok-skip-browser-warning": "69420",
-          'Content-Type': 'application/json'
-        },
+        // headers: {
+        //   "ngrok-skip-browser-warning": "69420",
+        //   'Content-Type': 'application/json'
+        // },
         body: JSON.stringify({
           model: this.model,
           messages: this.messageBuffer,
@@ -82,7 +82,7 @@ export class RagService {
       });
 
       const responseData = await response.json();
-      const answer = responseData.message.content || "I couldn't generate a response. Please try again.";
+      const answer = responseData.choices[0].message.content || "I couldn't generate a response. Please try again.";
 
       const sources = searchResults.map(result => ({
         documentId: result.documentId,
