@@ -12,6 +12,7 @@
     let userInput = '';
     let messages: Array<ChatMessage & { sources?: any[] }> = [];
     let isProcessing = false;
+    let isScroll = false;
     let error = '';
 
     // Track if auto-scroll should be enabled
@@ -39,10 +40,11 @@
     });
 
     // Auto-scroll to bottom when messages change
-    $: if (messages && autoScroll && chatContainer) {
+    $: if (isScroll) {
         setTimeout(() => {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }, 100);
+        isScroll = false;
     }
 
     async function handleSubmit() {
@@ -51,6 +53,7 @@
         const userMessage = userInput.trim();
         userInput = '';
         isProcessing = true;
+        isScroll = true;
         error = '';
 
         // Add user message to the chat
@@ -62,7 +65,7 @@
                 ...messages,
                 { role: 'assistant', content: '...' }
             ];
-
+            isScroll = false;
             // Search for relevant document chunks
             const searchResults = await documentStore.semanticSearch(userMessage, 5);
             
@@ -79,6 +82,7 @@
                     sources: response.sources
                 }
             ];
+            isScroll = true;
         } catch (e) {
             console.error('Error processing message:', e);
             error = 'Sorry, there was an error processing your request. Please try again.';
@@ -92,6 +96,7 @@
 
     function handleKeyDown(e: KeyboardEvent) {
         if (e.key === 'Enter' && !e.shiftKey) {
+            isScroll = true;
             e.preventDefault();
             handleSubmit();
         }
@@ -121,10 +126,6 @@
     <div 
         class="bg-white rounded-lg shadow-lg p-4 mb-4 flex-grow overflow-y-auto max-h-[60vh]"
         bind:this={chatContainer}
-        on:scroll={() => {
-            const isAtBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 50;
-            autoScroll = isAtBottom;
-        }}
     >
         {#each messages as message, i (i)}
             <div class={`mb-4 ${message.role === 'user' ? 'text-right' : ''}`}>
