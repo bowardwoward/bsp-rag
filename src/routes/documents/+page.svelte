@@ -11,7 +11,7 @@
     let searchQuery = '';
     let selectedType = 'all';
     let processing = false;
-    let apiEndpoint = 'https://your-api-endpoint.com/issuances';
+    let apiEndpoint = 'http://localhost:3000/api/issuances/paginated?pageSize=10';
 
     // Filter options
     const issuanceTypes = ['all', 'Circular', 'Memorandum', 'Advisory', 'Resolution'];

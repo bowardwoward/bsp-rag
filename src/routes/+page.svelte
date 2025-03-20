@@ -10,11 +10,11 @@
 		// Try to load from localStorage first
 		const hasLocalData = documentStore.loadFromStorage();
 
-		// if (!hasLocalData) {
-		// 	isLoading = true;
-		// 	await documentStore.fetchDocuments(`${API_URL}/issuances?limit=100`);
-		// 	isLoading = false;
-		// }
+		if (!hasLocalData) {
+			isLoading = true;
+			await documentStore.fetchDocuments(`http://localhost:3000/api/issuances/paginated?pageSize=10`);
+			isLoading = false;
+		}
 	});
 
 	function handleStartChatting() {

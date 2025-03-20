@@ -9,7 +9,7 @@ export class EmbeddingService {
 	constructor() {
 		this.openai = new OpenAI({
             dangerouslyAllowBrowser: true,
-			apiKey: `<OPENAI_KEY>`
+			apiKey: ``
 		});
 	}
 
