@@ -2,7 +2,7 @@ import type { DocumentChunk, SearchResult } from '$lib/types';
 
 export class EmbeddingService {
 	private embeddingModel = 'nomic-embed-text';
-	private apiUrl = 'http://localhost:11434';
+	private apiUrl = 'http://localhost:11434/api';
 
 
 	constructor() {}
@@ -11,7 +11,7 @@ export class EmbeddingService {
 	 * Generate embeddings for a single text chunk
 	 */
 	private async generateEmbedding(text: string): Promise<number[]> {
-		const response = await fetch(`${this.apiUrl}/embeddings`, {
+		const response = await fetch(`${this.apiUrl}/embed`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ export class EmbeddingService {
 		});
 
 		const data = await response.json();
-		return data.data[0].embedding;
+		return data.embeddings;
 	}
 
 	/**
@@ -38,7 +38,7 @@ export class EmbeddingService {
 			const texts = batch.map((chunk) => chunk.text);
 
 			try {
-				const response = await fetch(`${this.apiUrl}/embeddings`, {
+				const response = await fetch(`${this.apiUrl}/embed`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ export class EmbeddingService {
 				for (let j = 0; j < batch.length; j++) {
 					result.push({
 						...batch[j],
-						embedding: data.data[j].embedding
+						embedding: data.embeddings
 					});
 				}
 
