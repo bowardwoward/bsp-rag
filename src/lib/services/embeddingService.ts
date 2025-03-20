@@ -1,35 +1,34 @@
-// import { OPENAI_API_KEY } from '$env/static/private';
 import type { DocumentChunk, SearchResult } from '$lib/types';
-import OpenAI from 'openai';
 
 export class EmbeddingService {
-	private openai: OpenAI;
-	private embeddingModel = 'text-embedding-ada-002';
+	private embeddingModel = 'nomic-embed-text';
+	private apiUrl = 'http://localhost:11434';
 
-	constructor() {
-		this.openai = new OpenAI({
-            dangerouslyAllowBrowser: true,
-			apiKey: `<OPENAI_KEY>`
-		});
-	}
+	constructor() {}
 
 	/**
 	 * Generate embeddings for a single text chunk
 	 */
 	private async generateEmbedding(text: string): Promise<number[]> {
-		const response = await this.openai.embeddings.create({
-			model: this.embeddingModel,
-			input: text
+		const response = await fetch(`${this.apiUrl}/embeddings`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				model: this.embeddingModel,
+				input: text
+			})
 		});
 
-		return response.data[0].embedding;
+		const data = await response.json();
+		return data.data[0].embedding;
 	}
 
 	/**
 	 * Generate embeddings for multiple chunks efficiently
 	 */
 	public async generateEmbeddings(chunks: DocumentChunk[]): Promise<DocumentChunk[]> {
-		
 		const batchSize = 20; 
 		const result: DocumentChunk[] = [];
 
@@ -38,29 +37,33 @@ export class EmbeddingService {
 			const texts = batch.map((chunk) => chunk.text);
 
 			try {
-				
-				const response = await this.openai.embeddings.create({
-					model: this.embeddingModel,
-					input: texts
+				const response = await fetch(`${this.apiUrl}/embeddings`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						model: this.embeddingModel,
+						input: texts
+					})
 				});
 
-				
+				const data = await response.json();
+
 				for (let j = 0; j < batch.length; j++) {
 					result.push({
 						...batch[j],
-						embedding: response.data[j].embedding
+						embedding: data.data[j].embedding
 					});
 				}
 
 				console.log(`Generated embeddings for ${i + batch.length} of ${chunks.length} chunks`);
 
-				
 				if (i + batchSize < chunks.length) {
 					await new Promise((resolve) => setTimeout(resolve, 200));
 				}
 			} catch (error) {
 				console.error('Error generating embeddings:', error);
-				
 				result.push(...batch);
 			}
 		}
@@ -105,7 +108,6 @@ export class EmbeddingService {
 		chunks: DocumentChunk[],
 		limit: number = 5
 	): SearchResult[] {
-		
 		const chunksWithEmbeddings = chunks.filter(
 			(chunk) => chunk.embedding && chunk.embedding.length > 0
 		);
@@ -114,7 +116,6 @@ export class EmbeddingService {
 			return [];
 		}
 
-		
 		const results = chunksWithEmbeddings.map((chunk) => {
 			const score = this.cosineSimilarity(queryEmbedding, chunk.embedding!);
 			return {
@@ -127,7 +128,6 @@ export class EmbeddingService {
 			};
 		});
 
-		
 		return results.sort((a, b) => b.score - a.score).slice(0, limit);
 	}
 }
