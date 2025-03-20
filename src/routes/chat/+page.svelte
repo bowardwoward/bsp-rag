@@ -131,7 +131,7 @@
                 <div 
                     class={`inline-block p-3 rounded-lg ${
                         message.role === 'user' 
-                            ? 'bg-blue-600 text-white' 
+                            ? 'bg-[#FFA500] text-white' 
                             : 'bg-gray-100 text-gray-800'
                     } ${message.content === '...' ? 'animate-pulse' : ''}`}
                 >
@@ -176,14 +176,14 @@
                 bind:value={userInput}
                 on:keydown={handleKeyDown}
                 placeholder="Type your question about BSP regulations..."
-                class="flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#FFA500]"
                 rows="2"
                 disabled={isProcessing}
             ></textarea>
             <button
                 type="submit"
-                class={`px-6 py-2 bg-blue-600 text-white rounded-r-lg ${
-                    isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+                class={`px-6 py-2 bg-[#FFA500] text-white rounded-r-lg ${
+                    isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#FF8C00]'
                 }`}
                 disabled={isProcessing}
             >

@@ -27,8 +27,10 @@
 	"dependencies": {
 		"@langchain/community": "^0.3.35",
 		"@langchain/core": "^0.3.42",
+		"@tailwindcss/vite": "^4.0.14",
 		"langchain": "^0.3.19",
 		"openai": "^4.87.3",
-		"pdf-parse": "^1.1.1"
+		"pdf-parse": "^1.1.1",
+		"tailwindcss": "^4.0.14"
 	}
 }
