@@ -14,6 +14,7 @@ export class PdfService {
             const response = await fetch('/api/process-pdf', {
                 method: 'POST',
                 headers: {
+                    "ngrok-skip-browser-warning": "69420",
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({

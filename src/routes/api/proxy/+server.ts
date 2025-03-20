@@ -20,6 +20,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
         return new Response(data, {
             headers: {
+                "ngrok-skip-browser-warning": "69420",
                 'Content-Type': contentType || 'application/pdf'
             }
         });

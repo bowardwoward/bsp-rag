@@ -14,7 +14,8 @@ export class EmbeddingService {
 		const response = await fetch(`${this.apiUrl}/embed`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				"ngrok-skip-browser-warning": "69420",
 			},
 			body: JSON.stringify({
 				model: this.embeddingModel,
@@ -41,6 +42,7 @@ export class EmbeddingService {
 				const response = await fetch(`${this.apiUrl}/embed`, {
 					method: 'POST',
 					headers: {
+						"ngrok-skip-browser-warning": "69420",
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
