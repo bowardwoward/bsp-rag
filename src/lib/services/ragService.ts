@@ -2,7 +2,7 @@ import type { ChatMessage, RagResponse, SearchResult } from '$lib/types';
 
 export class RagService {
   private model = 'gemma3'; 
-  private apiUrl = 'http://localhost:11434/v1/completions';
+  private apiUrl = 'http://localhost:11434/api/chat';
 
   constructor() {}
 
@@ -32,7 +32,7 @@ export class RagService {
   5. If the question is unclear or cannot be answered with the given context, ask for clarification.`;
 
     return [
-    { role: 'system', content: systemPrompt },
+    { role: 'assistant', content: systemPrompt },
     { role: 'user', content: query }
     ];
   }
@@ -61,13 +61,12 @@ export class RagService {
       body: JSON.stringify({
       model: this.model,
       messages,
-      temperature: 0.3, 
-      max_tokens: 1000,
+      stream: false
       })
     });
 
     const responseData = await response.json();
-    const answer = responseData.choices[0].message.content || "I couldn't generate a response. Please try again.";
+    const answer = responseData.message.content || "I couldn't generate a response. Please try again.";
     
     const sources = searchResults.map(result => ({
       documentId: result.documentId,
