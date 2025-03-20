@@ -4,6 +4,7 @@ export class EmbeddingService {
 	private embeddingModel = 'nomic-embed-text';
 	private apiUrl = 'http://localhost:11434';
 
+
 	constructor() {}
 
 	/**

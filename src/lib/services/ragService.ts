@@ -18,6 +18,7 @@ export class RagService {
     .join('\n---\n\n');
     
     const systemPrompt = `You are a helpful assistant specializing in Philippine Banking and Financial regulations from the Bangko Sentral ng Pilipinas (BSP).
+
   Answer the user's question based on the following context information. If the answer is not contained in the context, say "I don't have enough information to answer this question" and suggest what additional information might help.
   
   Context information:
