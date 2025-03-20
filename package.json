@@ -31,6 +31,7 @@
 		"langchain": "^0.3.19",
 		"openai": "^4.87.3",
 		"pdf-parse": "^1.1.1",
+		"snarkdown": "^2.0.0",
 		"tailwindcss": "^4.0.14"
 	}
 }
