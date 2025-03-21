@@ -4,35 +4,34 @@ export class EmbeddingService {
 	private embeddingModel = 'mxbai-embed-large';
 	private apiUrl = 'http://localhost:11434/api';
 
-
 	constructor() {}
 
 	public async saveEmbeddingsToChroma(chunks: DocumentChunk[]): Promise<DocumentChunk[]> {
-        try {
-            const response = await fetch('/api/embeddings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    action: 'add',
-                    data: {
-                        chunks: chunks
-                    }
-                })
-            });
+		try {
+			const response = await fetch('/api/embeddings', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					action: 'add',
+					data: {
+						chunks: chunks
+					}
+				})
+			});
 
-            if (!response.ok) {
-                throw new Error('Failed to save embeddings to ChromaDB');
-            }
+			if (!response.ok) {
+				throw new Error('Failed to save embeddings to ChromaDB');
+			}
 
-            const result = await response.json();
-            return result.chunks;
-        } catch (error) {
-            console.error('Error saving embeddings to ChromaDB:', error);
-            throw error;
-        }
-    }
+			const result = await response.json();
+			return result.chunks;
+		} catch (error) {
+			console.error('Error saving embeddings to ChromaDB:', error);
+			throw error;
+		}
+	}
 
 	/**
 	 * Generate embeddings for a single text chunk
@@ -58,7 +57,7 @@ export class EmbeddingService {
 	 * Generate embeddings for multiple chunks efficiently
 	 */
 	public async generateEmbeddings(chunks: DocumentChunk[]): Promise<DocumentChunk[]> {
-		const batchSize = 20; 
+		const batchSize = 20;
 		const result: DocumentChunk[] = [];
 
 		for (let i = 0; i < chunks.length; i += batchSize) {
@@ -106,10 +105,32 @@ export class EmbeddingService {
 	 */
 	public async generateQueryEmbedding(query: string): Promise<number[]> {
 		try {
+			// Try to use the server endpoint first for consistent embeddings
+			const response = await fetch('/api/embeddings', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					action: 'embed',
+					data: {
+						text: query
+					}
+				})
+			});
+
+			if (response.ok) {
+				const result = await response.json();
+				if (result.embedding) {
+					return result.embedding;
+				}
+			}
+
+			// Fall back to local embedding if the server endpoint fails
 			return await this.generateEmbedding(query);
 		} catch (error) {
 			console.error('Error generating query embedding:', error);
-			throw error;
+			return await this.generateEmbedding(query);
 		}
 	}
 
