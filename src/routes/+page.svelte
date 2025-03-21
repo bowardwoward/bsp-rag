@@ -37,9 +37,6 @@
 	.orange-bg {
 		background-color: #FFA500;
 	}
-	.orange-border {
-		border-color: #FFA500;
-	}
 </style>
 
 <div class="max-w-3xl mx-auto">

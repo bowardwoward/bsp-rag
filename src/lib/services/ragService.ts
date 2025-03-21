@@ -1,7 +1,7 @@
 import type { ChatMessage, RagResponse, SearchResult } from '$lib/types';
 
 export class RagService {
-  private model = 'gemma3';
+  private model = 'deepseek-r1';
   private apiUrl = 'http://localhost:11434/v1/chat/completions';
   private messageBuffer: ChatMessage[] = [];
 
@@ -67,10 +67,6 @@ export class RagService {
 
       const response = await fetch(this.apiUrl, {
         method: 'POST',
-        // headers: {
-        //   "ngrok-skip-browser-warning": "69420",
-        //   'Content-Type': 'application/json'
-        // },
         body: JSON.stringify({
           model: this.model,
           messages: this.messageBuffer,

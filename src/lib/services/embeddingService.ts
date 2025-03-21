@@ -1,11 +1,38 @@
 import type { DocumentChunk, SearchResult } from '$lib/types';
 
 export class EmbeddingService {
-	private embeddingModel = 'nomic-embed-text';
+	private embeddingModel = 'mxbai-embed-large';
 	private apiUrl = 'http://localhost:11434/api';
 
 
 	constructor() {}
+
+	public async saveEmbeddingsToChroma(chunks: DocumentChunk[]): Promise<DocumentChunk[]> {
+        try {
+            const response = await fetch('/api/embeddings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: 'add',
+                    data: {
+                        chunks: chunks
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save embeddings to ChromaDB');
+            }
+
+            const result = await response.json();
+            return result.chunks;
+        } catch (error) {
+            console.error('Error saving embeddings to ChromaDB:', error);
+            throw error;
+        }
+    }
 
 	/**
 	 * Generate embeddings for a single text chunk

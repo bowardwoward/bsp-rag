@@ -90,8 +90,8 @@ export const documentStore = {
         
         
         const chunksWithEmbeddings = await embeddingService.generateEmbeddings(allChunks);
-        
-        
+        await embeddingService.saveEmbeddingsToChroma(chunksWithEmbeddings);
+        console.log('Successfully saved embeddings to ChromaDB');
         const finalProcessedBatch = processedBatch.map(doc => {
           if (!doc.chunks) return doc;
           

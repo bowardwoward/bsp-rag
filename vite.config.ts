@@ -6,5 +6,14 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		sveltekit()
-	]
+	],
+	define: {
+		global: {}
+	},
+	resolve: {
+        alias: {
+            process: "process/browser",
+            buffer: "buffer",
+        },
+    },
 });
