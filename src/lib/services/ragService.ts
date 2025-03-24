@@ -72,6 +72,7 @@ export class RagService {
           messages: this.messageBuffer,
           options: {
             temperature: 0.3,
+            stop: ['<think></think>',]
           },
           stream: false
         })
