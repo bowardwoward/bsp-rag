@@ -70,9 +70,9 @@ class ServerEmbeddingService {
 			const documents = chunks.map((chunk) => chunk.text);
 			const embeddings = await this.generateEmbeddings(documents); // Explicitly generate embeddings
 
-            if (documents.length !== embeddings.length) {
-                throw new Error('Embedding count does not match document count.');
-            }
+			if (documents.length !== embeddings.length) {
+				throw new Error('Embedding count does not match document count.');
+			}
 
 			const metadatas = chunks.map((chunk) => ({
 				documentId: Number(chunk.metadata.documentId),
@@ -88,13 +88,16 @@ class ServerEmbeddingService {
 				metadatas
 			});
 
-			
-
 			return chunks;
 		} catch (error) {
 			console.error('Error adding documents to ChromaDB:', error);
 			return chunks;
 		}
+	}
+
+	public async generateQueryEmbedding(text: string): Promise<number[]> {
+		const embeddings = await this.generateEmbeddings([text]);
+		return embeddings[0];
 	}
 
 	public async search(query: string, limit: number = 5): Promise<SearchResult[]> {
@@ -155,6 +158,9 @@ export const POST: RequestHandler = async ({ request }) => {
 			case 'clear':
 				await embeddingService.clearData();
 				return json({ success: true });
+			case 'embed':
+				const embedding = await embeddingService.generateQueryEmbedding(data.text);
+				return json({ embedding });
 
 			default:
 				return new Response('Invalid action', { status: 400 });

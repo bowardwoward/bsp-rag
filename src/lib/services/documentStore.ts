@@ -4,20 +4,17 @@ import { browser } from '$app/environment';
 import { PdfService } from './pdfService';
 import { EmbeddingService } from './embeddingService';
 
-
 const documentsStore = writable<IssuanceDocument[]>([]);
 const chunksStore = writable<DocumentChunk[]>([]);
 const isLoadingStore = writable(false);
 const progressStore = writable({ total: 0, processed: 0 });
 
-
 const pdfService = new PdfService();
 const embeddingService = new EmbeddingService();
 
-
 const processedDocumentsCount = derived(
-  documentsStore,
-  $docs => $docs.filter(doc => doc.content).length
+	documentsStore,
+	($docs) => $docs.filter((doc) => doc.content).length
 );
 
 export const documentStore = {
@@ -260,3 +257,4 @@ export const documentStore = {
     }
   }
 };
+
